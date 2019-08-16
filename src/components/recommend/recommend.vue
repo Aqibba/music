@@ -1,7 +1,20 @@
 <template>
   <div class="recommend" ref="recommend">
     <div class="recommend-content">
-      <div class="slider-wrapper"></div>
+      <!-- 当recommendList中有值得时候在执行swiper中的mounted中的set -->
+      <div v-if="recommendList.length" class="slider-wrapper">
+        <!-- 轮播图 -->
+        <swiper>
+          <!-- 遍历通过jsonp得到的轮播图 -->
+          <div v-for="(item, index) of recommendList" :key="index">
+            <!-- {{ item.linkUrl }} -->
+            <!-- {{ item.picUrl }} -->
+            <a href="#">
+              <img :src="item.picUrl" />
+            </a>
+          </div>
+        </swiper>
+      </div>
       <div class="recommend-list"><h1 class="list-title">热门歌单推荐</h1></div>
     </div>
   </div>
@@ -10,7 +23,13 @@
 <script>
 import { getRecommend } from '../../api/recommend.js'
 import { ERR_OK } from '../../api/config.js'
+import Swiper from '../../base/swiper/swiper.vue'
 export default {
+  data () {
+    return {
+      recommendList: []
+    }
+  },
   created () {
     this._getRecommend()
   },
@@ -18,10 +37,14 @@ export default {
     _getRecommend () {
       getRecommend().then((res) => {
         if (res.code === ERR_OK) {
-          console.log(res.data.slider)
+          // console.log(res.data.slider)
+          this.recommendList = res.data.slider
         }
       })
     }
+  },
+  components: {
+    Swiper
   }
 }
 </script>
