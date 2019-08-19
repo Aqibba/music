@@ -13,9 +13,9 @@ const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
 // 后端代理绕过host以及referer
-// const express = require('express')
-// const axios = require('axios')
-// const app = express()
+const express = require('express')
+const axios = require('axios')
+const app = express()
 // var apiRoutes = express.Router()
 // app.use('/api', apiRoutes)
 // // //
@@ -32,22 +32,22 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    // before (app) {
-    //   app.get('/api/getRecommend', function(req, res) {
-    //     let url = 'https://c.y.qq.com/splcloud/fcgi-bin/p.fcg'
-    //     axios.get(url, {
-    //       headers: {
-    //         referer: 'https://c.y.qq.com/',
-    //         host: 'c.y.qq.com'
-    //       },
-    //       params: req.query
-    //     }).then((response) => {
-    //       res.json(response.data)
-    //     }).catch((e) => {
-    //       console.log(e)
-    //     })
-    //   })
-    // },
+    before (app) {
+      app.get('/api/getDiscList', function(req, res) {
+        let url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
+        axios.get(url, {
+          headers: {
+            referer: 'https://c.y.qq.com/'
+            // host: 'c.y.qq.com'
+          },
+          params: req.query
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((e) => {
+          console.log(e)
+        })
+      })
+    },
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [{
@@ -85,7 +85,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: true
+      inject: true,
+      favicon: path.resolve('./favicon.ico')
     }),
     // copy custom static assets
     new CopyWebpackPlugin([{

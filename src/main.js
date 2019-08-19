@@ -7,13 +7,17 @@ import router from './router'
 
 import './common/styles/index.styl'
 import fastclick from 'fastclick'
-import VueAwesomeSwiper from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
+// import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import 'swiper/dist/css/swiper.css'
+import VueLazyload from 'vue-lazyload'
 
 Vue.config.productionTip = false
 
 fastclick.attach(document.body)
-Vue.use(VueAwesomeSwiper)
+// Vue.use(VueAwesomeSwiper)
+Vue.use(VueLazyload, {
+  loading: require('./assets/images/music.png')
+})
 
 /* eslint-disable no-new */
 new Vue({

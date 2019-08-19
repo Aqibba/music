@@ -50,6 +50,13 @@ export default {
       }
     }, 20)
   },
+  // 清除定时器优化释放内存
+  deactivated () {
+    clearInterval(this.timer)
+  },
+  beforeDestroy () {
+    clearInterval(this.timer)
+  },
   methods: {
     // 设置横向滚动轮播的宽度
     setSliderWidth () {
@@ -99,13 +106,14 @@ export default {
       // 当滚动结束时小圆点变成长条
       this.slider.on('scrollEnd', () => {
         // 当前页
-        let pageIndex = this.slider.getCurrentPage().pageX
-        this.currentIndex = pageIndex
+        // let pageIndex = this.slider.getCurrentPage().pageX
+        // this.currentIndex = pageIndex
+        this.currentIndex = this.slider.getCurrentPage().pageX
         // 清除上一次的定时器在执行下一次
-        if (this.autoplay) {
-          clearTimeout(this.timer)
-          this.play()
-        }
+        // if (this.autoplay) {
+        //   clearTimeout(this.timer)
+        //   this.play()
+        // }
       })
     },
     // 初始化轮播图上的小圆点
@@ -117,7 +125,10 @@ export default {
     play () {
       // let pageIndex = this.currentIndex + 1
       // console.log(pageIndex)
-      this.timer = setTimeout(() => {
+      // this.timer = setTimeout(() => {
+      //   this.slider.next()
+      // }, this.interval)
+      this.timer = setInterval(() => {
         this.slider.next()
       }, this.interval)
     }

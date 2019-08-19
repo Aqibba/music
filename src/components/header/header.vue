@@ -1,6 +1,6 @@
 <template>
   <div class="m-header">
-    <!-- <div class="icon"></div> -->
+    <div class="icon"></div>
     <div class="text">The Music</div>
   </div>
 </template>
@@ -27,6 +27,7 @@ export default {
     height 2rem
     margin-right 0.5625rem
     // bg-image ('logo')
+    background-image url(../../assets/images/MusicAcc.png)
     background-size 1.875rem 2rem
   .text
     display inline-block
