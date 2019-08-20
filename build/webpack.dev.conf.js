@@ -33,6 +33,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   // these devServer options should be customized in /config/index.js
   devServer: {
     before (app) {
+      // 歌单列表
       app.get('/api/getDiscList', function(req, res) {
         let url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
         axios.get(url, {
@@ -47,6 +48,21 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       })
+
+      // app.get('/api/getSingerList', function(req, res) {
+      //   let url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+      //   axios.get(url, {
+      //     headers: {
+      //       referer: 'https://c.y.qq.com/'
+      //       // host: 'c.y.qq.com'
+      //     },
+      //     params: req.query
+      //   }).then((response) => {
+      //     res.json(response.data)
+      //   }).catch((e) => {
+      //     console.log(e)
+      //   })
+      // })
     },
     clientLogLevel: 'warning',
     historyApiFallback: {

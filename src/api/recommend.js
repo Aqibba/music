@@ -24,7 +24,6 @@ export function getDiscList () {
     rnd: Math.random(),
     loginUin: 0,
     hostUin: 0,
-    format: 'json',
     platform: 'yqq.json',
     needNewCode: 0,
     categoryId: 10000000,
