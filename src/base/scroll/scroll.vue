@@ -21,6 +21,11 @@ export default {
     data: {
       type: Array,
       default: null
+    },
+    // 监听滚动
+    listenScroll: {
+      type: Boolean,
+      default: false
     }
   },
   mounted () {
@@ -40,6 +45,13 @@ export default {
         probeType: this.probeType,
         click: this.click
       })
+      // 如果滚动事件执行
+      if (this.listenScroll) {
+        let me = this
+        this.scroll.on('scroll', (pos) => {
+          me.$emit('scroll', pos)
+        })
+      }
     },
     // 禁用 better-scroll，DOM 事件（如 touchstart、touchmove、touchend）的回调函数不再响应。
     disable () {
@@ -52,6 +64,13 @@ export default {
     // 重新计算 better-scroll, 计算高度
     refresh () {
       this.scroll && this.scroll.refresh()
+    },
+    // 滚动到相应位置
+    scrollTo () {
+      this.scroll && scroll.scrollTo.apply(this.scroll, arguments)
+    },
+    scrollToElement () {
+      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
     }
   },
   // 监听data中的变化
