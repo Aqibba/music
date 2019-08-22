@@ -35,18 +35,18 @@ export default {
     display: flex
     align-items: center
     box-sizing: border-box
-    height: 4rem
+    height: 64px
     font-size: $font-size-medium
     .rank
-      flex: 0 0 1.5625rem
-      width: 1.5625rem
-      margin-right: 1.875rem
+      flex: 0 0 25px
+      width: 25px
+      margin-right: 30px
       text-align: center
       .icon
         display: inline-block
-        width: 1.5625rem
-        height: 1.5rem
-        background-size: 1.5625rem 1.5rem
+        width: 25px
+        height: 24px
+        background-size: 25px 24px
         &.icon0
           bg-image('first')
         &.icon1
@@ -58,13 +58,13 @@ export default {
         font-size: $font-size-large
     .content
       flex: 1
-      line-height: 1.25rem
+      line-height: 20px
       overflow: hidden
       .name
         no-wrap()
         color: $color-text
       .desc
         no-wrap()
-        margin-top: 0.25rem
+        margin-top: 4px
         color: $color-text-d
 </style>

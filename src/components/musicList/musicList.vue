@@ -1,15 +1,24 @@
 <template>
   <div class="music-list">
-    <div class="back">
+    <div class="back" @click="back">
       <i class="icon-back"></i>
     </div>
     <h1 class="title" v-html="title"></h1>
-    <div class="bg-image" :style="bgStyle">
+    <div class="bg-image" :style="bgStyle" ref="bgImage">
+      <div class="play-wrapper">
+        <div class="play" v-show="songs.length>0">
+          <i class="icon-play"></i>
+          <span class="text">随机播放全部</span>
+        </div>
+      </div>
       <div class="filter"></div>
     </div>
-    <scroll :data="songs">
+    <scroll :data="songs" class="list" ref="list">
         <div class="song-list-wrapper">
           <song-list :songs="songs"></song-list>
+        </div>
+        <div v-show="!songs.length" class="loading-container">
+          <loading></loading>
         </div>
     </scroll>
   </div>
@@ -18,6 +27,7 @@
 <script>
 import Scroll from '../../base/scroll/scroll.vue'
 import SongList from '../../base/songList/songList.vue'
+import Loading from '../../base/loading/loading.vue'
 
 export default {
   props: {
@@ -39,16 +49,26 @@ export default {
       return `background-image:url(${this.bgImage})`
     }
   },
+  mounted () {
+    // 歌曲的想起列表对于页面的高度就是歌手海报的高度
+    this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight / 16}rem`
+  },
   components: {
     Scroll,
-    SongList
+    SongList,
+    Loading
+  },
+  methods: {
+    back () {
+      this.$router.back()
+    }
   }
 }
 </script>
 
 <style lang="stylus" scoped="scoped">
 @import '../../common/styles/variable'
-@import '../../common/styles/mixin'
+// @import '../../common/styles/mixin'
 
 .music-list
   position: fixed
@@ -61,11 +81,11 @@ export default {
   .back
     position absolute
     top: 0
-    left: 0.375rem
+    left: 6px
     z-index: 50
     .icon-back
       display: block
-      padding: 0.625rem
+      padding: 10px
       font-size: $font-size-large-x
       color: $color-theme
   .title
@@ -76,7 +96,7 @@ export default {
     width: 80%
     no-wrap()
     text-align: center
-    line-height: 2.5rem
+    line-height: 40px
     font-size: $font-size-large
     color: $color-text
   .bg-image
@@ -88,23 +108,23 @@ export default {
     background-size: cover
     .play-wrapper
       position: absolute
-      bottom: 1.25rem
+      bottom: 20px
       z-index: 50
       width: 100%
       .play
         box-sizing: border-box
-        width: 8.4375rem
-        padding: 0.4375rem 0
+        width: 135px
+        padding: 7px 0
         margin: 0 auto
         text-align: center
-        border: 0.0625rem solid $color-theme
+        border: 1px solid $color-theme
         color: $color-theme
-        border-radius: 6.25rem
+        border-radius: 100px
         font-size: 0
         .icon-play
           display: inline-block
           vertical-align: middle
-          margin-right: 0.375rem
+          margin-right: 6px
           font-size: $font-size-medium-x
         .text
           display: inline-block
@@ -126,9 +146,10 @@ export default {
     top: 0
     bottom: 0
     width: 100%
+    overflow hidden
     background: $color-background
     .song-list-wrapper
-      padding: 1.25rem 1.875rem
+      padding: 20px 30px
     .loading-container
       position: absolute
       width: 100%
