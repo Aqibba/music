@@ -6,6 +6,7 @@
         <h2 class="list-group-title">{{ group.title }}</h2>
         <uL>
           <!-- 遍历group.items的得到歌手的图片和歌手名 -->
+          <!-- 添加点击事件 -->
           <li @click="selectItem(item)" v-for="(item, index) in group.items" :key="index" class="list-group-item">
             <img class="avatar" v-lazy="item.avatar" />
             <span class="name">{{ item.name }}</span>
@@ -27,9 +28,9 @@
 </template>
 
 <script>
-import Scroll from '../../base/scroll/scroll'
-import Loading from '../../base/loading/loading'
-import { getData } from '../../common/js/dom'
+import Scroll from '../../../base/scroll/scroll'
+import Loading from '../../../base/loading/loading'
+import { getData } from '../../../common/js/dom'
 
 const TITLE_HEIGHT = 30
 const ANCHOR_HEIGHT = 18
@@ -68,6 +69,7 @@ export default {
     this.listHeight = []
   },
   methods: {
+    // 派发点击事件, 将点击的元素传出
     selectItem (item) {
       this.$emit('select', item)
     },
@@ -171,7 +173,7 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-@import '../../common/styles/variable'
+@import '../../../common/styles/variable'
 
 .listview
   position relative

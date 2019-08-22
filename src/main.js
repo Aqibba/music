@@ -4,7 +4,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import store from './store'
 import './common/styles/index.styl'
 import fastclick from 'fastclick'
 // import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -23,6 +23,7 @@ Vue.use(VueLazyload, {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
