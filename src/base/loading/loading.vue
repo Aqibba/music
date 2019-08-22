@@ -23,7 +23,7 @@ export default {
   width: 100%
   text-align: center
   .desc
-    line-height: 20px
+    line-height: 1.25rem
     font-size: $font-size-small
     color: $color-text-l
 </style>

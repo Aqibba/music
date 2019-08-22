@@ -81,11 +81,11 @@ export default {
   .back
     position absolute
     top: 0
-    left: 6px
+    left: 0.375rem
     z-index: 50
     .icon-back
       display: block
-      padding: 10px
+      padding: 0.625rem
       font-size: $font-size-large-x
       color: $color-theme
   .title
@@ -96,7 +96,7 @@ export default {
     width: 80%
     no-wrap()
     text-align: center
-    line-height: 40px
+    line-height: 2.5rem
     font-size: $font-size-large
     color: $color-text
   .bg-image
@@ -108,23 +108,23 @@ export default {
     background-size: cover
     .play-wrapper
       position: absolute
-      bottom: 20px
+      bottom: 1.25rem
       z-index: 50
       width: 100%
       .play
         box-sizing: border-box
-        width: 135px
-        padding: 7px 0
+        width: 8.4375rem
+        padding: 0.4375rem 0
         margin: 0 auto
         text-align: center
-        border: 1px solid $color-theme
+        border: 0.0625rem solid $color-theme
         color: $color-theme
-        border-radius: 100px
+        border-radius: 6.25rem
         font-size: 0
         .icon-play
           display: inline-block
           vertical-align: middle
-          margin-right: 6px
+          margin-right: 0.375rem
           font-size: $font-size-medium-x
         .text
           display: inline-block
@@ -149,7 +149,7 @@ export default {
     overflow hidden
     background: $color-background
     .song-list-wrapper
-      padding: 20px 30px
+      padding: 1.25rem 1.875rem
     .loading-container
       position: absolute
       width: 100%

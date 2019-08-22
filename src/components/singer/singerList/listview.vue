@@ -162,7 +162,7 @@ export default {
         return
       }
       this.fixedTop = fixedTop
-      this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
+      this.$refs.fixed.style.transform = `translate3d(0,${fixedTop / 16}rem,0)`
     }
   },
   components: {
@@ -182,24 +182,24 @@ export default {
   overflow hidden
   background $color-background
   .list-group
-    padding-bottom 30px
+    padding-bottom 1.875rem
     .list-group-title
-      height 30px
-      line-height 30px
-      padding-left 20px
+      height 1.875rem
+      line-height 1.875rem
+      padding-left 1.25rem
       font-size $font-size-small
       color $color-text-l
       background $color-highlight-background
     .list-group-item
       display flex
       align-items center
-      padding 20px 0 0 30px
+      padding 1.25rem 0 0 1.875rem
       .avatar
-        width 50px
-        height 50px
+        width 3.125rem
+        height 3.125rem
         border-radius 50%
       .name
-        margin-left 20px
+        margin-left 1.25rem
         color $color-text-l
         font-size $font-size-medium
   .list-shortcut
@@ -208,14 +208,14 @@ export default {
     right 0
     top 50%
     transform translateY(-50%)
-    width 20px
-    padding 20px 0
-    border-radius 10px
+    width 1.25rem
+    padding 1.25rem 0
+    border-radius 0.625rem
     text-align center
     background $color-background-d
     font-family Helvetica
     .item
-      padding 3px
+      padding 0.1875rem
       line-height 1
       color $color-text-l
       font-size $font-size-small
@@ -227,9 +227,9 @@ export default {
     left 0
     width 100%
     .fixed-title
-      height 30px
-      line-height 30px
-      padding-left 20px
+      height 1.875rem
+      line-height 1.875rem
+      padding-left 1.25rem
       font-size $font-size-small
       color $color-text-l
       background $color-highlight-background
