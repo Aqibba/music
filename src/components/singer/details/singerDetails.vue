@@ -1,8 +1,8 @@
 <template>
   <transition name="slide" :appear="true">
     <!-- <div class="singer-detail"></div> -->
-    <!-- <music-list :songs="songs" :title="title" :bgImage="bgImage"></music-list> -->
-    <music-list></music-list>
+    <music-list :songs="songs" :title="title" :bgImage="bgImage"></music-list>
+    <!-- <music-list></music-list> -->
   </transition>
 </template>
 
@@ -23,12 +23,12 @@ export default {
     MusicList
   },
   computed: {
-    // title () {
-    //   return this.singer.name
-    // },
-    // bgImage () {
-    //   return this.singer.avatar
-    // },
+    title () {
+      return this.singer.name
+    },
+    bgImage () {
+      return this.singer.avatar
+    },
     ...mapGetters([
       'singer'
     ])
