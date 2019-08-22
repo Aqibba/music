@@ -1,6 +1,7 @@
 <template>
   <div class="singer">
-    <list-view :data="singerList"></list-view>
+    <list-view :data="singerList" @select="selectSinger"></list-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,7 +10,8 @@ import { getSingerList } from '../../api/singer.js'
 import { ERR_OK } from '../../api/config.js'
 import Loading from '../../base/loading/loading.vue'
 import Singer from '../../common/js/singer.js'
-import ListView from './listview.vue'
+import ListView from './singerList/listview.vue'
+import { mapMutations } from 'vuex'
 
 const HOT_NAME = '热门'
 const HOT_SINGER_LEN = 10
@@ -24,6 +26,14 @@ export default {
     this._getSinger()
   },
   methods: {
+    // 跳转相应的歌手详情
+    selectSinger (singer) {
+      this.$router.push({
+        path: `/singer/${singer.id}`
+      })
+      this._setSinger(singer)
+    },
+    // 得到歌手列表
     _getSinger () {
       getSingerList().then(res => {
         if (res.code === ERR_OK) {
@@ -81,11 +91,16 @@ export default {
           ret.push(val)
         }
       }
+      // 排序
       ret.sort((a, b) => {
         return a.title.charCodeAt(0) - b.title.charCodeAt(0)
       })
       return hot.concat(ret)
-    }
+    },
+    // 映射
+    ...mapMutations({
+      _setSinger: 'SET_SINGER'
+    })
   },
   components: {
     Loading,
