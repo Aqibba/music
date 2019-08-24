@@ -15,7 +15,7 @@
     </div>
     <scroll :data="songs" class="list" ref="list">
         <div class="song-list-wrapper">
-          <song-list :songs="songs"></song-list>
+          <song-list @select="selectItem" :songs="songs"></song-list>
         </div>
         <div v-show="!songs.length" class="loading-container">
           <loading></loading>
@@ -28,6 +28,7 @@
 import Scroll from '../../base/scroll/scroll.vue'
 import SongList from '../../base/songList/songList.vue'
 import Loading from '../../base/loading/loading.vue'
+import {mapActions} from 'vuex'
 
 export default {
   props: {
@@ -61,14 +62,23 @@ export default {
   methods: {
     back () {
       this.$router.back()
-    }
+    },
+    selectItem (item, index) {
+      this.selectPlay({
+        list: this.songs,
+        index
+      })
+    },
+    ...mapActions([
+      'selectPlay'
+    ])
   }
 }
 </script>
 
 <style lang="stylus" scoped="scoped">
 @import '../../common/styles/variable'
-// @import '../../common/styles/mixin'
+@import '../../common/styles/mixin'
 
 .music-list
   position: fixed
