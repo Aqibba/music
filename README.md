@@ -5,10 +5,10 @@
 ## Build Setup
 
 ``` bash
-# install dependencies
+# 安装相应的依赖包
 npm install
 
-# serve with hot reload at localhost:8080
+# 运行此项目 并访问 localhost:8080
 npm run dev
 
 # build for production with minification
