@@ -1,72 +1,139 @@
 <template>
   <div class="player" v-show="playlist.length>0">
     <!-- 展开的播放器 -->
-    <div class="normal-player" v-show="fullScreen">
-      <div class="background">
-        <img width="100%" height="100%" :src="currentSong.image">
-      </div>
-      <div class="top">
-        <div class="back">
-          <i class="icon-back"></i>
+    <transition name="normal">
+      <div class="normal-player" v-show="fullScreen">
+        <div class="background">
+          <img width="100%" height="100%" :src="currentSong.image">
         </div>
-        <h1 class="title" v-html="currentSong.name"></h1>
-        <h2 class="subtitle" v-html="currentSong.singer"></h2>
-      </div>
-      <div class="middle">
-        <div class="middle-l">
-          <div class="cd-wrapper">
-            <div class="cd">
-              <img class="image" :src="currentSong.image">
+        <div class="top">
+          <div class="back" @click="back">
+            <i class="icon-back"></i>
+          </div>
+          <h1 class="title" v-html="currentSong.name"></h1>
+          <h2 class="subtitle" v-html="currentSong.singer"></h2>
+        </div>
+        <div class="middle">
+          <div class="middle-l">
+            <div class="cd-wrapper">
+              <div class="cd" :class="cdCls">
+                <img class="image" :src="currentSong.image">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom">
+          <div class="operators">
+            <div class="icon i-left">
+              <i class="icon-sequence"></i>
+            </div>
+            <div class="icon i-left">
+              <i :class="prev" class="icon-prev"></i>
+            </div>
+            <div class="icon i-center">
+              <i @click="togglePlaying" :class="playIcon"></i>
+            </div>
+            <div class="icon i-right">
+              <i @click="next" class="icon-next"></i>
+            </div>
+            <div class="icon i-right">
+              <i class="icon icon-not-favorite"></i>
             </div>
           </div>
         </div>
       </div>
-      <div class="bottom">
-        <div class="operators">
-          <div class="icon i-left">
-            <i class="icon-sequence"></i>
-          </div>
-          <div class="icon i-left">
-            <i class="icon-prev"></i>
-          </div>
-          <div class="icon i-center">
-            <i class="icon-play"></i>
-          </div>
-          <div class="icon i-right">
-            <i class="icon-next"></i>
-          </div>
-          <div class="icon i-right">
-            <i class="icon icon-not-favorite"></i>
-          </div>
+    </transition>
+    <transition name="mini">
+    <!-- 收起的播放器 -->
+      <div class="mini-player" v-show="!fullScreen" @click="open">
+        <div class="icon">
+          <img width="40" height="40" :class="cdCls" :src="currentSong.image">
+        </div>
+        <div class="text">
+          <h2 class="name" v-html="currentSong.name"></h2>
+          <p class="desc" v-html="currentSong.singer"></p>
+        </div>
+        <div class="control">
+          <i @click.stop="togglePlaying" :class="miniIcon"></i>
+        </div>
+        <div class="control">
+          <i class="icon-playlist"></i>
         </div>
       </div>
-    </div>
-    <!-- 收起的播放器 -->
-    <div class="mini-player" v-show="!fullScreen">
-      <div class="icon">
-        <img width="40" height="40" :src="currentSong.image">
-      </div>
-      <div class="text">
-        <h2 class="name" v-html="currentSong.name"></h2>
-        <p class="desc" v-html="currentSong.singer"></p>
-      </div>
-      <div class="control"></div>
-      <div class="control">
-        <i class="icon-playlist"></i>
-      </div>
-    </div>
+    </transition>
+    <audio :src="currentSong.url" ref="audio"></audio>
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapMutations} from 'vuex'
 export default {
   computed: {
+    cdCls () {
+      return this.playing ? 'play' : ''
+    },
+    playIcon () {
+      return this.playing ? 'icon-pause' : 'icon-play'
+    },
+    miniIcon () {
+      return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+    },
     ...mapGetters([
       'fullScreen',
       'playlist',
-      'currentSong'
+      'currentSong',
+      'playing',
+      'cerrentIndex'
     ])
+  },
+  methods: {
+    // 下一首
+    next () {
+      let index = this.currentIndex + 1
+      if (index === this.playlist.length) {
+        index = 0
+      }
+      this.setCurrentIndex(index)
+    },
+    // 上一首
+    prev () {
+      let index = this.currentIndex - 1
+      if (index === -1) {
+        index = this.playlist.length - 1
+      }
+      this.setCurrentIndex(index)
+    },
+    // 播放键
+    togglePlaying () {
+      this.setPlayingState(!this.playing)
+    },
+    // 关闭播放器, 变成比不的小型的播放器
+    back () {
+      this.setFullScreen(false)
+    },
+    // 展开小播放器, 变成大的播放器
+    open () {
+      this.setFullScreen(true)
+    },
+    ...mapMutations({
+      setFullScreen: 'SET_FULL_SCREEN',
+      setPlayingState: 'SET_PLAYING_STATE',
+      setCurrentIndex: 'SET_CURRENT_INDEX'
+    })
+  },
+  watch: {
+    currentSong () {
+      // DOM 渲染后在执行这个播放操作
+      this.$nextTick(() => {
+        this.$refs.audio.play()
+      })
+    },
+    playing (nowPlaying) {
+      const audio = this.$refs.audio
+      this.$nextTick(() => {
+        nowPlaying ? audio.play() : audio.pause()
+      })
+    }
   }
 }
 </script>
@@ -246,16 +313,6 @@ export default {
           text-align: left
         .icon-favorite
           color: $color-sub-theme
-    &.normal-enter-active, &.normal-leave-active
-      transition: all 0.4s
-      .top, .bottom
-        transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32)
-    &.normal-enter, &.normal-leave-to
-      opacity: 0
-      .top
-        transform: translate3d(0, -6.25rem, 0)
-      .bottom
-        transform: translate3d(0, 6.25rem, 0)
   .mini-player
     display: flex
     align-items: center
@@ -266,10 +323,6 @@ export default {
     width: 100%
     height: 3.75rem
     background: $color-highlight-background
-    &.mini-enter-active, &.mini-leave-active
-      transition: all 0.4s
-    &.mini-enter, &.mini-leave-to
-      opacity: 0
     .icon
       flex: 0 0 2.5rem
       width: 2.5rem
@@ -309,9 +362,9 @@ export default {
         color: $color-theme-d
       .icon-mini
         font-size: 2rem
-        position: absolute
-        left: 0
-        top: 0
+        // position: absolute
+        // left: 0
+        // top: 0
 
 @keyframes rotate
   0%
